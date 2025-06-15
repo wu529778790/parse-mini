@@ -70,6 +70,33 @@
             margin-bottom: 16px;
         }
 
+        .paste-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .paste-btn:active {
+            transform: scale(0.95);
+            background: #5a67d8;
+        }
+
+        .paste-icon {
+            font-size: 0.9rem;
+        }
+
         .video-input {
             width: 100%;
             padding: 16px;
@@ -227,13 +254,83 @@
             border: 1px solid #e2e8f0;
         }
 
+        .video-preview {
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
         .video-thumbnail {
             width: 100%;
-            max-width: 150px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            margin: 0 auto 16px;
+            height: auto;
             display: block;
+            border-radius: 12px;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-overlay:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        .play-icon {
+            font-size: 1.5rem;
+            margin-left: 3px;
+        }
+
+        .video-duration-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .video-description {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.4;
+            margin-bottom: 16px;
+            padding: 0 4px;
         }
 
         .video-details h3 {
@@ -268,10 +365,50 @@
             font-size: 1.2rem;
         }
 
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .quality-section {
+            margin-bottom: 20px;
+        }
+
+        .quality-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .quality-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #4a5568;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quality-btn.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .quality-btn:active {
+            transform: scale(0.95);
+        }
+
         .download-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
             margin-top: 20px;
         }
 
@@ -279,21 +416,81 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            padding: 16px 12px;
-            background: #48bb78;
-            color: white;
-            text-decoration: none;
+            gap: 4px;
+            padding: 14px 10px;
+            border: none;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
             text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .download-btn.primary {
+            background: #48bb78;
+            color: white;
+        }
+
+        .download-btn.secondary {
+            background: #667eea;
+            color: white;
+        }
+
+        .download-btn:not(.primary):not(.secondary) {
+            background: #718096;
+            color: white;
         }
 
         .download-btn:active {
             transform: scale(0.95);
+        }
+
+        .download-btn.primary:active {
             background: #38a169;
+        }
+
+        .download-btn.secondary:active {
+            background: #5a67d8;
+        }
+
+        .download-size {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .download-progress {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #4a5568;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
         }
 
         .download-emoji {
@@ -368,6 +565,10 @@
             <label class="input-label" for="videoUrl">粘贴视频链接或分享文本</label>
             <div class="input-wrapper">
                 <textarea id="videoUrl" class="video-input" placeholder="在这里粘贴抖音、快手、小红书等平台的分享链接..." rows="3"></textarea>
+                <button class="paste-btn" id="pasteBtn">
+                    <span class="paste-icon">📋</span>
+                    <span>粘贴</span>
+                </button>
             </div>
 
             <div class="platform-grid">
@@ -409,10 +610,22 @@
 
         <div class="result-section" id="resultSection">
             <div class="result-card">
-                <img class="video-thumbnail" id="videoThumbnail" src="" alt="视频封面" />
+                <!-- 视频预览区域 -->
+                <div class="video-preview">
+                    <div class="video-container" id="videoContainer">
+                        <img class="video-thumbnail" id="videoThumbnail" src="" alt="视频封面" />
+                        <div class="play-overlay" id="playOverlay">
+                            <div class="play-button">
+                                <span class="play-icon">▶️</span>
+                            </div>
+                        </div>
+                        <div class="video-duration-badge" id="durationBadge">00:00</div>
+                    </div>
+                </div>
 
                 <div class="video-details">
                     <h3 id="videoTitle">视频标题</h3>
+                    <p class="video-description" id="videoDescription">视频描述信息</p>
 
                     <div class="video-meta">
                         <div class="meta-item">
@@ -433,15 +646,46 @@
                         </div>
                     </div>
 
+                    <!-- 视频质量选择 -->
+                    <div class="quality-section">
+                        <h4 class="section-title">选择画质</h4>
+                        <div class="quality-options">
+                            <button class="quality-btn active" data-quality="hd">高清</button>
+                            <button class="quality-btn" data-quality="sd">标清</button>
+                            <button class="quality-btn" data-quality="audio">仅音频</button>
+                        </div>
+                    </div>
+
                     <div class="download-section">
-                        <a href="#" class="download-btn" id="downloadVideo">
+                        <button class="download-btn primary" id="downloadVideo">
                             <span class="download-emoji">📥</span>
                             <span>下载视频</span>
-                        </a>
-                        <a href="#" class="download-btn" id="downloadAudio">
+                            <span class="download-size">~15MB</span>
+                        </button>
+                        <button class="download-btn secondary" id="downloadAudio">
                             <span class="download-emoji">🎵</span>
                             <span>下载音频</span>
-                        </a>
+                            <span class="download-size">~3MB</span>
+                        </button>
+                        <button class="download-btn" id="shareBtn">
+                            <span class="download-emoji">🔗</span>
+                            <span>分享链接</span>
+                        </button>
+                        <button class="download-btn" id="copyLinkBtn">
+                            <span class="download-emoji">📋</span>
+                            <span>复制链接</span>
+                        </button>
+                    </div>
+
+                    <!-- 下载进度 -->
+                    <div class="download-progress" id="downloadProgress" style="display: none;">
+                        <div class="progress-info">
+                            <span class="progress-text">下载中...</span>
+                            <span class="progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -483,6 +727,7 @@
         const videoInput = document.getElementById('videoUrl');
         const loading = document.getElementById('loading');
         const resultSection = document.getElementById('resultSection');
+        const pasteBtn = document.getElementById('pasteBtn');
 
         parseBtn.addEventListener('click', async () => {
             const url = videoInput.value.trim();
@@ -512,13 +757,14 @@
             setTimeout(() => {
                 showResult({
                     title: '精彩短视频内容，非常有趣！',
-                    author: '创作者',
+                    description: '这是一个关于生活技巧的短视频，内容丰富有趣，值得观看和分享。',
+                    author: '创作者昵称',
                     duration: '45秒',
                     likes: '12.3万',
                     platform: getPlatformName(selectedPlatform),
-                    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZmFmYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYTBhZWMwIiBmb250LXNpemU9IjEyIj7op4bpopHlsIHpnaI8L3RleHQ+PC9zdmc+',
-                    videoUrl: '#',
-                    audioUrl: '#'
+                    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2NjdlZWEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3NjRiYTIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiPuinhumikea0u+WKqOinhOmikem2kTwvdGV4dD48Y2lyY2xlIGN4PSIxNTAiIGN5PSIyMDAiIHI9IjMwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMykiLz48cG9seWdvbiBwb2ludHM9IjE0MCwyMDAgMTYwLDIwMCAxNTAsMjEwIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==',
+                    videoUrl: 'https://example.com/video.mp4',
+                    audioUrl: 'https://example.com/audio.mp3'
                 });
 
                 // 恢复按钮状态
@@ -547,13 +793,16 @@
 
         function showResult(data) {
             document.getElementById('videoTitle').textContent = data.title;
+            document.getElementById('videoDescription').textContent = data.description;
             document.getElementById('videoAuthor').textContent = data.author;
             document.getElementById('videoDuration').textContent = data.duration;
             document.getElementById('videoLikes').textContent = data.likes;
             document.getElementById('videoPlatform').textContent = data.platform;
             document.getElementById('videoThumbnail').src = data.thumbnail;
-            document.getElementById('downloadVideo').href = data.videoUrl;
-            document.getElementById('downloadAudio').href = data.audioUrl;
+            document.getElementById('durationBadge').textContent = data.duration;
+
+            // 存储视频数据供下载使用
+            window.currentVideoData = data;
 
             resultSection.classList.add('show');
 
@@ -636,6 +885,187 @@
             if (e.target.closest('.download-btn')) {
                 if ('vibrate' in navigator) {
                     navigator.vibrate(15);
+                }
+            }
+        });
+
+        // 粘贴按钮功能
+        pasteBtn.addEventListener('click', async () => {
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    if (text) {
+                        videoInput.value = text;
+                        videoInput.style.height = 'auto';
+                        videoInput.style.height = videoInput.scrollHeight + 'px';
+                        showToast('已粘贴内容');
+
+                        if ('vibrate' in navigator) {
+                            navigator.vibrate(15);
+                        }
+                    } else {
+                        showToast('剪贴板为空');
+                    }
+                } else {
+                    showToast('浏览器不支持剪贴板访问');
+                }
+            } catch (err) {
+                showToast('无法访问剪贴板');
+            }
+        });
+
+        // 画质选择功能
+        document.querySelectorAll('.quality-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 更新下载按钮文件大小显示
+                const quality = btn.dataset.quality;
+                updateDownloadSizes(quality);
+
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+
+        function updateDownloadSizes(quality) {
+            const videoSizeSpan = document.querySelector('#downloadVideo .download-size');
+            const audioSizeSpan = document.querySelector('#downloadAudio .download-size');
+
+            const sizes = {
+                'hd': { video: '~25MB', audio: '~3MB' },
+                'sd': { video: '~15MB', audio: '~3MB' },
+                'audio': { video: '~0MB', audio: '~3MB' }
+            };
+
+            if (videoSizeSpan && audioSizeSpan) {
+                videoSizeSpan.textContent = sizes[quality].video;
+                audioSizeSpan.textContent = sizes[quality].audio;
+            }
+        }
+
+        // 下载功能
+        document.getElementById('downloadVideo').addEventListener('click', () => {
+            if (window.currentVideoData) {
+                startDownload('video', window.currentVideoData.videoUrl);
+            }
+        });
+
+        document.getElementById('downloadAudio').addEventListener('click', () => {
+            if (window.currentVideoData) {
+                startDownload('audio', window.currentVideoData.audioUrl);
+            }
+        });
+
+        function startDownload(type, url) {
+            if (!url || url === '#') {
+                showToast('下载链接无效，请重新解析');
+                return;
+            }
+
+            // 显示下载进度
+            const progressSection = document.getElementById('downloadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.querySelector('.progress-percent');
+            const progressText = document.querySelector('.progress-text');
+
+            progressSection.style.display = 'block';
+            progressText.textContent = `正在下载${type === 'video' ? '视频' : '音频'}...`;
+
+            // 模拟下载进度
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) {
+                    progress = 100;
+                    clearInterval(interval);
+
+                    setTimeout(() => {
+                        progressSection.style.display = 'none';
+                        showToast('下载完成！');
+
+                        // 触发实际下载（在真实应用中）
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = `video_${Date.now()}.${type === 'video' ? 'mp4' : 'mp3'}`;
+                        link.click();
+
+                        if ('vibrate' in navigator) {
+                            navigator.vibrate([100, 50, 100]);
+                        }
+                    }, 500);
+                }
+
+                progressFill.style.width = progress + '%';
+                progressPercent.textContent = Math.round(progress) + '%';
+            }, 200);
+
+            if ('vibrate' in navigator) {
+                navigator.vibrate(20);
+            }
+        }
+
+        // 分享功能
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            if (window.currentVideoData) {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: window.currentVideoData.title,
+                            text: window.currentVideoData.description,
+                            url: window.currentVideoData.videoUrl
+                        });
+                        showToast('分享成功');
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            copyToClipboard(window.currentVideoData.videoUrl);
+                        }
+                    }
+                } else {
+                    copyToClipboard(window.currentVideoData.videoUrl);
+                }
+            }
+        });
+
+        // 复制链接功能
+        document.getElementById('copyLinkBtn').addEventListener('click', () => {
+            if (window.currentVideoData) {
+                copyToClipboard(window.currentVideoData.videoUrl);
+            }
+        });
+
+        async function copyToClipboard(text) {
+            try {
+                if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(text);
+                    showToast('链接已复制到剪贴板');
+                } else {
+                    // 降级方案
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('链接已复制');
+                }
+
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(15);
+                }
+            } catch (err) {
+                showToast('复制失败');
+            }
+        }
+
+        // 视频预览播放（模拟）
+        document.getElementById('playOverlay').addEventListener('click', () => {
+            if (window.currentVideoData) {
+                showToast('视频预览功能开发中...');
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(25);
                 }
             }
         });
