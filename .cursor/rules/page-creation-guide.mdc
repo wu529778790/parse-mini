@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 页面创建指南
+
+## 创建新页面的步骤
+
+### 1. 创建页面文件
+在 `pages/` 目录下创建新的文件夹，以页面名称命名：
+```
+pages/
+  └── 页面名称/
+      └── 页面名称.vue
+```
+
+### 2. 页面模板
+参考 [pages/index/index.vue](mdc:pages/index/index.vue) 的结构创建新页面：
+
+```vue
+<template>
+  <view class="content">
+    <!-- 页面内容 -->
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // 页面数据
+    }
+  },
+  onLoad() {
+    // 页面加载时执行
+  },
+  methods: {
+    // 页面方法
+  }
+}
+</script>
+
+<style>
+.content {
+  padding: 20rpx;
+}
+</style>
+```
+
+### 3. 注册页面路由
+在 [pages.json](mdc:pages.json) 的 `pages` 数组中添加新页面：
+
+```json
+{
+  "path": "pages/页面名称/页面名称",
+  "style": {
+    "navigationBarTitleText": "页面标题"
+  }
+}
+```
+
+### 4. 常用生命周期
+
+- `onLoad()` - 页面加载时触发
+- `onShow()` - 页面显示时触发
+- `onReady()` - 页面初次渲染完成时触发
+- `onHide()` - 页面隐藏时触发
+- `onUnload()` - 页面卸载时触发
+
+### 5. 页面导航
+
+使用 `uni.navigateTo()` 进行页面跳转：
+```javascript
+uni.navigateTo({
+  url: '/pages/页面名称/页面名称'
+})
+```
+

@@ -1,0 +1,94 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 常用开发模式和最佳实践
+
+## 布局模式
+
+### Flex 布局（推荐）
+参考 [pages/index/index.vue](mdc:pages/index/index.vue) 中的布局方式：
+
+```css
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+```
+
+### 响应式设计
+- 使用 `rpx` 单位确保跨设备适配
+- 图片使用相对尺寸：`width: 200rpx; height: 200rpx;`
+- 字体大小建议：`font-size: 28rpx - 36rpx`
+
+## 数据管理
+
+### 页面数据
+```javascript
+export default {
+  data() {
+    return {
+      title: 'Hello',
+      list: [],
+      loading: false
+    }
+  }
+}
+```
+
+### 网络请求
+```javascript
+methods: {
+  async fetchData() {
+    try {
+      this.loading = true
+      const res = await uni.request({
+        url: 'https://api.example.com/data',
+        method: 'GET'
+      })
+      this.list = res.data
+    } catch (error) {
+      console.error('请求失败:', error)
+    } finally {
+      this.loading = false
+    }
+  }
+}
+```
+
+## 常用组件
+
+### 图片组件
+参考 [pages/index/index.vue](mdc:pages/index/index.vue) 中 logo 的使用：
+```vue
+<image class="logo" src="/static/logo.png" mode="aspectFit"></image>
+```
+
+### 文本组件
+```vue
+<text class="title">{{title}}</text>
+```
+
+### 按钮组件
+```vue
+<button @click="handleClick" type="primary">点击按钮</button>
+```
+
+## 样式最佳实践
+
+### 全局样式
+- 在 [uni.scss](mdc:uni.scss) 中定义全局变量和混入
+- 使用语义化的类名
+
+### 局部样式
+- 避免样式冲突，使用 scoped 或唯一类名前缀
+- 遵循 BEM 命名规范
+
+### 色彩规范
+参考当前项目的色彩使用：
+- 主色：根据 [pages.json](mdc:pages.json) 中的 `navigationBarBackgroundColor`
+- 文字色：`#8f8f94`（如首页标题所示）
+

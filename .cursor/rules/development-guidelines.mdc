@@ -1,0 +1,61 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# uni-app 开发指导原则
+
+## Vue 3 语法规范
+
+本项目使用 Vue 3 Composition API 或 Options API，请遵循以下规范：
+
+### 组件结构
+```vue
+<template>
+  <!-- 模板内容 -->
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // 响应式数据
+    }
+  },
+  onLoad() {
+    // 页面加载生命周期
+  },
+  methods: {
+    // 方法定义
+  }
+}
+</script>
+
+<style>
+/* 样式定义 */
+</style>
+```
+
+## 样式单位规范
+
+- 使用 `rpx` 作为响应式像素单位（750rpx = 100vw）
+- 避免使用 `px`，除非需要固定尺寸
+- 参考 [uni.scss](mdc:uni.scss) 中的全局样式变量
+
+## 页面配置
+
+- 新页面创建后需要在 [pages.json](mdc:pages.json) 中注册
+- 页面标题通过 `navigationBarTitleText` 配置
+- 全局样式在 `globalStyle` 中定义
+
+## 平台兼容性
+
+当前项目配置支持以下平台：
+- App (Android/iOS)
+- 微信小程序
+- 支付宝小程序
+- 百度小程序
+- 字节跳动小程序
+
+请确保代码在所有目标平台上都能正常运行。
+

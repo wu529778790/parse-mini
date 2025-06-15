@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# uni-app 项目结构指南
+
+这是一个基于 Vue 3 的 uni-app 跨平台应用项目。
+
+## 核心文件
+
+- **[manifest.json](mdc:manifest.json)** - 应用配置文件，包含应用信息、平台配置和权限设置
+- **[pages.json](mdc:pages.json)** - 页面路由配置，定义页面路径和样式
+- **[main.js](mdc:main.js)** - 应用入口文件
+- **[App.vue](mdc:App.vue)** - 应用根组件
+- **[uni.scss](mdc:uni.scss)** - 全局样式文件
+
+## 目录结构
+
+- **pages/** - 页面文件夹
+  - **index/** - 首页相关文件
+    - **[index.vue](mdc:pages/index/index.vue)** - 首页组件
+- **static/** - 静态资源文件夹
+  - **[logo.png](mdc:static/logo.png)** - 应用图标
+- **unpackage/** - 打包输出目录
+
+## 开发规范
+
+- 页面文件放在 `pages/` 目录下，每个页面一个文件夹
+- 静态资源放在 `static/` 目录下
+- 新增页面需要在 [pages.json](mdc:pages.json) 中注册路由
+
