@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>短视频解析 - 移动版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+            padding: 20px 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .input-section {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .video-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            /* 防止iOS自动缩放 */
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #fff;
+            resize: none;
+            min-height: 50px;
+        }
+
+        .video-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .video-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .platform-btn {
+            padding: 12px 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            color: #4a5568;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-height: 70px;
+            justify-content: center;
+        }
+
+        .platform-btn:active {
+            transform: scale(0.95);
+        }
+
+        .platform-btn.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .platform-emoji {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .parse-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .parse-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .parse-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .result-section {
+            margin-top: 25px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            max-width: 150px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 16px;
+            display: block;
+        }
+
+        .video-details h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .video-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            color: #4a5568;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px 8px;
+            border-radius: 10px;
+        }
+
+        .meta-emoji {
+            font-size: 1.2rem;
+        }
+
+        .download-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 16px 12px;
+            background: #48bb78;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .download-btn:active {
+            transform: scale(0.95);
+            background: #38a169;
+        }
+
+        .download-emoji {
+            font-size: 1.3rem;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 25px;
+            border-left: 4px solid #f56565;
+        }
+
+        .tips h4 {
+            color: #c53030;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .tips ul {
+            color: #742a2a;
+            padding-left: 16px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .tips li {
+            margin-bottom: 4px;
+        }
+
+        .bottom-space {
+            height: 40px;
+        }
+
+        /* 安全区域适配 */
+        @supports (padding: max(0px)) {
+            .container {
+                padding-left: max(16px, env(safe-area-inset-left));
+                padding-right: max(16px, env(safe-area-inset-right));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* 横屏适配 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .header {
+                margin-bottom: 20px;
+                padding-top: 10px;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .tips {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">短视频解析</h1>
+            <p class="subtitle">支持主流平台无水印下载<br>简单快捷，一键解析</p>
+        </div>
+
+        <div class="input-section">
+            <label class="input-label" for="videoUrl">粘贴视频链接或分享文本</label>
+            <div class="input-wrapper">
+                <textarea id="videoUrl" class="video-input" placeholder="在这里粘贴抖音、快手、小红书等平台的分享链接..." rows="3"></textarea>
+            </div>
+
+            <div class="platform-grid">
+                <button class="platform-btn active" data-platform="auto">
+                    <span class="platform-emoji">🤖</span>
+                    <span>自动识别</span>
+                </button>
+                <button class="platform-btn" data-platform="douyin">
+                    <span class="platform-emoji">🎵</span>
+                    <span>抖音</span>
+                </button>
+                <button class="platform-btn" data-platform="kuaishou">
+                    <span class="platform-emoji">⚡</span>
+                    <span>快手</span>
+                </button>
+                <button class="platform-btn" data-platform="xiaohongshu">
+                    <span class="platform-emoji">📱</span>
+                    <span>小红书</span>
+                </button>
+                <button class="platform-btn" data-platform="bilibili">
+                    <span class="platform-emoji">📺</span>
+                    <span>哔哩哔哩</span>
+                </button>
+                <button class="platform-btn" data-platform="weishi">
+                    <span class="platform-emoji">🎬</span>
+                    <span>微视</span>
+                </button>
+            </div>
+
+            <button class="parse-btn" id="parseBtn">
+                🚀 开始解析
+            </button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">正在解析视频...</div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-card">
+                <img class="video-thumbnail" id="videoThumbnail" src="" alt="视频封面" />
+
+                <div class="video-details">
+                    <h3 id="videoTitle">视频标题</h3>
+
+                    <div class="video-meta">
+                        <div class="meta-item">
+                            <span class="meta-emoji">👤</span>
+                            <span id="videoAuthor">作者</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-emoji">⏱️</span>
+                            <span id="videoDuration">时长</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-emoji">👍</span>
+                            <span id="videoLikes">点赞</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-emoji">📱</span>
+                            <span id="videoPlatform">平台</span>
+                        </div>
+                    </div>
+
+                    <div class="download-section">
+                        <a href="#" class="download-btn" id="downloadVideo">
+                            <span class="download-emoji">📥</span>
+                            <span>下载视频</span>
+                        </a>
+                        <a href="#" class="download-btn" id="downloadAudio">
+                            <span class="download-emoji">🎵</span>
+                            <span>下载音频</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips">
+            <h4>💡 使用提示</h4>
+            <ul>
+                <li>支持抖音、快手、小红书、哔哩哔哩等平台</li>
+                <li>直接粘贴分享文本即可，无需提取链接</li>
+                <li>解析后可下载无水印视频和纯净音频</li>
+                <li>请遵守版权规定，仅供个人欣赏使用</li>
+            </ul>
+        </div>
+
+        <div class="bottom-space"></div>
+    </div>
+
+    <script>
+        // 平台选择器
+        const platformBtns = document.querySelectorAll('.platform-btn');
+        let selectedPlatform = 'auto';
+
+        platformBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                platformBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedPlatform = btn.dataset.platform;
+
+                // 添加触觉反馈（如果支持）
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+
+        // 解析按钮事件
+        const parseBtn = document.getElementById('parseBtn');
+        const videoInput = document.getElementById('videoUrl');
+        const loading = document.getElementById('loading');
+        const resultSection = document.getElementById('resultSection');
+
+        parseBtn.addEventListener('click', async () => {
+            const url = videoInput.value.trim();
+            if (!url) {
+                showToast('请输入视频链接！');
+                return;
+            }
+
+            // 添加触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(20);
+            }
+
+            // 显示加载状态
+            parseBtn.disabled = true;
+            parseBtn.textContent = '解析中...';
+            loading.classList.add('show');
+            resultSection.classList.remove('show');
+
+            // 滚动到加载区域
+            loading.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+            // 模拟解析过程
+            setTimeout(() => {
+                showResult({
+                    title: '精彩短视频内容，非常有趣！',
+                    author: '创作者',
+                    duration: '45秒',
+                    likes: '12.3万',
+                    platform: getPlatformName(selectedPlatform),
+                    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZmFmYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYTBhZWMwIiBmb250LXNpemU9IjEyIj7op4bpopHlsIHpnaI8L3RleHQ+PC9zdmc+',
+                    videoUrl: '#',
+                    audioUrl: '#'
+                });
+
+                // 恢复按钮状态
+                parseBtn.disabled = false;
+                parseBtn.textContent = '🚀 开始解析';
+                loading.classList.remove('show');
+
+                // 成功反馈
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([50, 50, 50]);
+                }
+            }, 2500);
+        });
+
+        function getPlatformName(platform) {
+            const names = {
+                'auto': '自动识别',
+                'douyin': '抖音',
+                'kuaishou': '快手',
+                'xiaohongshu': '小红书',
+                'bilibili': '哔哩哔哩',
+                'weishi': '微视'
+            };
+            return names[platform] || '未知平台';
+        }
+
+        function showResult(data) {
+            document.getElementById('videoTitle').textContent = data.title;
+            document.getElementById('videoAuthor').textContent = data.author;
+            document.getElementById('videoDuration').textContent = data.duration;
+            document.getElementById('videoLikes').textContent = data.likes;
+            document.getElementById('videoPlatform').textContent = data.platform;
+            document.getElementById('videoThumbnail').src = data.thumbnail;
+            document.getElementById('downloadVideo').href = data.videoUrl;
+            document.getElementById('downloadAudio').href = data.audioUrl;
+
+            resultSection.classList.add('show');
+
+            // 延迟滚动到结果区域
+            setTimeout(() => {
+                resultSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+        }
+
+        function showToast(message) {
+            // 简单的toast提示
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                z-index: 1000;
+                animation: fadeInOut 2s ease;
+            `;
+
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 2000);
+        }
+
+        // 自动粘贴功能
+        videoInput.addEventListener('focus', async () => {
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    if (text && text.length > 10 && !videoInput.value) {
+                        // 检测常用平台域名
+                        const platforms = ['douyin.com', 'kuaishou.com', 'xiaohongshu.com',
+                            'bilibili.com', 'weishi.qq.com'];
+                        const hasPlatform = platforms.some(platform =>
+                            text.includes(platform) || text.includes(platform.split('.')[0])
+                        );
+
+                        if (hasPlatform && confirm('检测到剪贴板有链接，是否自动填入？')) {
+                            videoInput.value = text;
+                            videoInput.style.height = 'auto';
+                            videoInput.style.height = videoInput.scrollHeight + 'px';
+                        }
+                    }
+                }
+            } catch (err) {
+                // 静默处理权限错误
+            }
+        });
+
+        // 自动调整输入框高度
+        videoInput.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+
+        // 防止双击缩放
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // 下载按钮点击反馈
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.download-btn')) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(15);
+                }
+            }
+        });
+
+        // 添加CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0; }
+                50% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
